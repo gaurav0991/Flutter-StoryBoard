@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:storyboard/widget_library/common_utitlities/common_colors.dart';
 import 'package:storyboard/widget_library/common_utitlities/common_text_styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GradientButtonBlue extends StatelessWidget {
   final String buttonText;
@@ -28,7 +29,9 @@ class GradientButtonBlue extends StatelessWidget {
         ]),
       ),
       child: MaterialButton(
-        onPressed: onTapGradientButton,
+        onPressed: () {
+          launch("https://www.udemy.com/");
+        },
         disabledColor: Colors.grey,
         child: Text(
           buttonText,

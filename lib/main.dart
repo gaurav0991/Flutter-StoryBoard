@@ -1,56 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:storyboard/LoginPage.dart';
+import 'package:storyboard/pages/AppBarPage.dart';
+import 'package:storyboard/pages/ButtonsPage.dart';
+import 'package:storyboard/themeProvider.dart';
 import 'package:storyboard/utils/colors.dart';
+import 'package:flutter_login/theme.dart';
+import 'package:storyboard/widget_library/themes.dart';
 
-import 'storyboard_home_page/home_page.dart';
+import 'pages/home_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers:[
+          ChangeNotifierProvider(create: (context) => ThemeProvider()),
+
+    ],
+    child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSharedData();
+  }
+
+  var d=null;
+  void getSharedData() async {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    d=s.getBool("darkMode");
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    final p=Provider.of<ThemeProvider>(context);
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.purple,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: primaryDarkColor,
-        accentColor: accentColor,
-        primaryColorDark: primaryDarkColor,
-        primaryColor: primaryColor,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-        textTheme: TextTheme(
-          title: GoogleFonts.robotoCondensed(),
-          subtitle: GoogleFonts.robotoCondensed(),
-          body1: GoogleFonts.robotoCondensed(),
-          body2: GoogleFonts.robotoCondensed(),
-          button: GoogleFonts.robotoCondensed(),
-          caption: GoogleFonts.robotoCondensed(),
-          display1: GoogleFonts.robotoCondensed(),
-          display2: GoogleFonts.robotoCondensed(),
-          display3: GoogleFonts.robotoCondensed(),
-          display4: GoogleFonts.robotoCondensed(),
-          headline: GoogleFonts.robotoCondensed(),
-          overline: GoogleFonts.robotoCondensed(),
-          subhead: GoogleFonts.robotoCondensed(),
-        ),
-      ),
-      home: MyHomePage(title: 'Our Story'),
-    );
+        routes: {'/AppBar with Title': (context) => AppBarPage(),"/Blue Gradient Button":(context) => ButtonsPage()},
+        title: 'Flutter Demo',
+        theme:p.DarkMode?StoryBoardThemes.lightTheme:StoryBoardThemes.darkTheme,
+        debugShowCheckedModeBanner: false,
+        home: LoginPage());
   }
 }

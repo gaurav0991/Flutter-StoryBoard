@@ -7,6 +7,9 @@ class ListItemWidget extends StatelessWidget {
   ListItemWidget(this.title);
   @override
   Widget build(BuildContext context) {
-    return Text(title, style: Theme.of(context).textTheme.subhead,);
+      print(title);
+    return Text(
+      title,
+    );
   }
 }
